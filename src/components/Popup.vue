@@ -33,7 +33,9 @@ export default {
     }
   },
   beforeDestroy() {
-    this.setVisible(false);
+    if (this.parent.getTooltip) {
+          this.parent.unbindPopup();
+        }
   },
   methods: {
     deferredMountedTo(parent) {

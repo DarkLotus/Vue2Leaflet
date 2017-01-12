@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("lodash"), require("leaflet"), require("vue"));
+		module.exports = factory(require("lodash"), require("leaflet"), require("leaflet.markercluster"), require("vue"));
 	else if(typeof define === 'function' && define.amd)
-		define(["lodash", "leaflet", "vue"], factory);
+		define(["lodash", "leaflet", "leaflet.markercluster", "vue"], factory);
 	else if(typeof exports === 'object')
-		exports["Vue2Leaflet"] = factory(require("lodash"), require("leaflet"), require("vue"));
+		exports["Vue2Leaflet"] = factory(require("lodash"), require("leaflet"), require("leaflet.markercluster"), require("vue"));
 	else
-		root["Vue2Leaflet"] = factory(root["lodash"], root["leaflet"], root["vue"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__) {
+		root["Vue2Leaflet"] = factory(root["lodash"], root["leaflet"], root["leaflet.markercluster"], root["vue"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_37__, __WEBPACK_EXTERNAL_MODULE_38__, __WEBPACK_EXTERNAL_MODULE_39__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,14 +56,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	
-	exports.Map = __webpack_require__(16);
-	exports.TileLayer = __webpack_require__(20);
-	exports.Marker = __webpack_require__(17);
-	exports.Polyline = __webpack_require__(18);
-	exports.LayerGroup = __webpack_require__(15);
-	exports.IconDefault = __webpack_require__(14);
-	exports.Tooltip = __webpack_require__(21);
-	exports.Popup = __webpack_require__(19);
+	exports.Map = __webpack_require__(20);
+	exports.TileLayer = __webpack_require__(24);
+	exports.Marker = __webpack_require__(21);
+	exports.Polyline = __webpack_require__(22);
+	exports.LayerGroup = __webpack_require__(19);
+	exports.IconDefault = __webpack_require__(18);
+	exports.Tooltip = __webpack_require__(25);
+	exports.Popup = __webpack_require__(23);
+	exports.Cluster = __webpack_require__(17);
 
 /***/ },
 /* 1 */
@@ -138,563 +139,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var props = {
-	  imagePath: {
-	    type: String,
-	    custom: true,
-	    default: ""
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    L.Icon.Default.imagePath = this.imagePath;
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    if (this.$parent._isMounted) {
-	      this.deferredMountedTo(this.$parent.mapObject);
-	    }
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {},
-	    setImagePath: function setImagePath(newVal, oldVal) {
-	      L.Icon.Default.imagePath = newVal;
-	    }
-	  }
-	};
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var props = {
-	  visible: {
-	    type: Boolean,
-	    custom: true,
-	    default: true
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    this.mapObject = L.layerGroup();
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    if (this.$parent._isMounted) {
-	      this.deferredMountedTo(this.$parent.mapObject);
-	    }
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.setVisible(false);
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {
-	      var that = this.mapObject;
-	      this.parent = parent;
-	      _.forEach(this.$children, function (child) {
-	        child.deferredMountedTo(that);
-	      });
-	      if (this.visible) {
-	        this.mapObject.addTo(parent);
-	      }
-	    },
-	    setVisible: function setVisible(newVal, oldVal) {
-	      if (newVal == oldVal) return;
-	      if (newVal) {
-	        this.mapObject.addTo(this.parent);
-	      } else {
-	        this.parent.removeLayer(this.mapObject);
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _lodash = __webpack_require__(3);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	var _vue = __webpack_require__(33);
-	
-	var _vue2 = _interopRequireDefault(_vue);
-	
-	var _leaflet = __webpack_require__(32);
-	
-	var _leaflet2 = _interopRequireDefault(_leaflet);
-	
-	var _eventsBinder = __webpack_require__(2);
-	
-	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove', 'contextmenu', 'focus', 'blur', 'preclick', 'load', 'unload', 'viewreset', 'movestart', 'move', 'moveend', 'dragstart', 'drag', 'dragend', 'zoomstart', 'zoomend', 'zoomanim', 'zoomlevelschange', 'resize', 'autopanstart', 'layeradd', 'layerremove', 'baselayerchange', 'overlayadd', 'overlayremove', 'locationfound', 'locationerror', 'popupopen', 'popupclose'];
-	
-	var props = {
-	  center: {
-	    custom: true,
-	    default: undefined
-	  },
-	  bounds: {
-	    custom: true,
-	    default: undefined
-	  },
-	  zoom: {
-	    type: Number,
-	    default: undefined
-	  },
-	  minZoom: {
-	    type: Number,
-	    default: undefined
-	  },
-	  maxZoom: {
-	    type: Number,
-	    default: undefined
-	  },
-	  paddingBottomRight: {
-	    custom: true,
-	    default: null
-	  },
-	  paddingTopLeft: {
-	    custom: true,
-	    default: null
-	  },
-	  padding: {
-	    custom: true,
-	    default: null
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    this.mapObject = _leaflet2.default.map(this.$el, {
-	      center: this.center,
-	      zoom: this.zoom,
-	      minZoom: this.minZoom,
-	      maxZoom: this.maxZoom
-	    });
-	    (0, _eventsBinder2.default)(this, this.mapObject, events);
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    var that = this.mapObject;
-	    _lodash2.default.forEach(this.$children, function (child) {
-	      child.deferredMountedTo(that);
-	    });
-	  },
-	
-	  methods: {
-	    setCenter: function setCenter(newVal, oldVal) {
-	      this.mapObject.setView(newVal, this.zoom);
-	    },
-	    setBounds: function setBounds(newVal, oldVal) {
-	      var options = {};
-	      if (this.padding) {
-	        options.padding = this.padding;
-	      } else {
-	        if (this.paddingBottomRight) {
-	          options.paddingBottomRight = this.paddingBottomRight;
-	        }
-	        if (this.paddingTopLeft) {
-	          options.paddingTopLeft = this.paddingTopLeft;
-	        }
-	      }
-	      this.mapObject.fitBounds(newVal, options);
-	    },
-	    setPaddingBottomRight: function setPaddingBottomRight(newVal, oldVal) {
-	      this.paddingBottomRight = newVal;
-	    },
-	    setPaddingTopLeft: function setPaddingTopLeft(newVal, oldVal) {
-	      this.paddingTopLeft = newVal;
-	    },
-	    setPadding: function setPadding(newVal, oldVal) {
-	      this.padding = newVal;
-	    }
-	  }
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _eventsBinder = __webpack_require__(2);
-	
-	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'dragstart', 'drag', 'dragend', 'move', 'add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
-	
-	var props = {
-	  draggable: {
-	    type: Boolean,
-	    custom: true,
-	    default: false
-	  },
-	  visible: {
-	    type: Boolean,
-	    custom: true,
-	    default: true
-	  },
-	  latLng: {
-	    type: Object
-	  },
-	  title: {
-	    type: String,
-	    custom: true,
-	    default: ''
-	  },
-	  icon: {
-	    custom: false,
-	    default: ''
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    var options = {};
-	    if (this.icon) {
-	      options.icon = this.icon;
-	    }
-	    options.draggable = this.draggable;
-	    this.mapObject = L.marker(this.latLng, options);
-	    (0, _eventsBinder2.default)(this, this.mapObject, events);
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    if (this.$parent._isMounted) {
-	      this.deferredMountedTo(this.$parent.mapObject);
-	    }
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.setVisible(false);
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {
-	      this.parent = parent;
-	      var that = this.mapObject;
-	      _.forEach(this.$children, function (child) {
-	        child.deferredMountedTo(that);
-	      });
-	      if (this.visible) {
-	        this.mapObject.addTo(parent);
-	      }
-	    },
-	    setDraggable: function setDraggable(newVal, oldVal) {
-	      newVal ? this.mapObject.dragging.enable() : this.mapObject.dragging.disable();
-	    },
-	    setVisible: function setVisible(newVal, oldVal) {
-	      if (newVal == oldVal) return;
-	      if (newVal) {
-	        this.mapObject.addTo(this.parent);
-	      } else {
-	        this.parent.removeLayer(this.mapObject);
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _eventsBinder = __webpack_require__(2);
-	
-	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
-	
-	var props = {
-	  latLngs: {
-	    type: Array,
-	    default: []
-	  },
-	  style: {
-	    type: Object
-	  },
-	  visible: {
-	    type: Boolean,
-	    custom: true,
-	    default: true
-	  },
-	  color: {
-	    type: String,
-	    custom: true,
-	    default: 'red'
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    this.mapObject = L.polyline(this.latLngs, { color: this.color });
-	    (0, _eventsBinder2.default)(this, this.mapObject, events);
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    if (this.$parent._isMounted) {
-	      this.deferredMountedTo(this.$parent.mapObject);
-	    }
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.setVisible(false);
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {
-	      this.parent = parent;
-	      if (this.visible) {
-	        this.mapObject.addTo(parent);
-	      }
-	    },
-	    setVisible: function setVisible(newVal, oldVal) {
-	      if (newVal == oldVal) return;
-	      if (newVal) {
-	        this.mapObject.addTo(this.parent);
-	      } else {
-	        this.parent.removeLayer(this.mapObject);
-	      }
-	    },
-	    setColor: function setColor(newVal, oldVal) {
-	      if (newVal == oldVal) return;
-	      if (newVal) {
-	        this.mapObject.setStyle({ color: newVal });
-	      }
-	    },
-	    addLatLng: function addLatLng(value) {
-	      this.mapObject.addLatLng(value);
-	    }
-	  }
-	};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _eventsBinder = __webpack_require__(2);
-	
-	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var events = ['add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
-	
-	var props = {
-	  content: {
-	    custom: true,
-	    default: ''
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    this.mapObject = L.popup();
-	    (0, _eventsBinder2.default)(this, this.mapObject, events);
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    if (this.$parent._isMounted) {
-	      this.deferredMountedTo(this.$parent.mapObject);
-	    }
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.setVisible(false);
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {
-	      this.parent = parent;
-	      parent.bindPopup(this.content);
-	    },
-	    setContent: function setContent(newVal, oldVal) {
-	      if (newVal) {
-	        this.parent.bindPopup(this.content);
-	      } else {
-	        if (this.parent.getTooltip) {
-	          this.parent.unbindPopup();
-	        }
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  props: ['url', 'attribution', 'token'],
-	  mounted: function mounted() {
-	    this.$tileLayer = L.tileLayer(this.url, {
-	      attribution: this.attribution,
-	      token: this.token
-	    });
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {
-	      this.$tileLayer.addTo(parent);
-	      _.forEach(this.$children, function (child) {
-	        child.deferredMountedTo(that);
-	      });
-	    }
-	  }
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _eventsBinder = __webpack_require__(2);
-	
-	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
-	
-	var _propsBinder = __webpack_require__(1);
-	
-	var _propsBinder2 = _interopRequireDefault(_propsBinder);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var events = ['add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
-	
-	var props = {
-	  content: {
-	    type: String,
-	    custom: true,
-	    default: ''
-	  }
-	};
-	
-	exports.default = {
-	  props: props,
-	  mounted: function mounted() {
-	    this.mapObject = L.tooltip();
-	    this.mapObject.setTooltipContent(this.content);
-	    (0, _eventsBinder2.default)(this, this.mapObject, events);
-	    (0, _propsBinder2.default)(this, this.mapObject, props);
-	    if (this.$parent._isMounted) {
-	      this.deferredMountedTo(this.$parent.mapObject);
-	    }
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.setVisible(false);
-	  },
-	
-	  methods: {
-	    deferredMountedTo: function deferredMountedTo(parent) {
-	      this.parent = parent;
-	      if (this.content) {
-	        this.parent.bindTooltip(this.content);
-	      }
-	    },
-	    setContent: function setContent(newVal, oldVal) {
-	      if (newVal) {
-	        this.parent.bindTooltip(this.content);
-	      } else {
-	        if (this.parent.getTooltip) {
-	          this.parent.unbindTooltip();
-	        }
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(13)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n#map {\n  height: 100%;\n  width: 100%;\n}\n.map-container {\n  height: 100%;\n  width: 100%;\n}\n", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 13 */
 /***/ function(module, exports) {
 
 	/*
@@ -750,316 +194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(4)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(29)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(5)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(28)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* styles */
-	__webpack_require__(31)
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(6)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(24)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(7)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(22)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(8)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(27)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(9)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(25)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(10)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(23)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(11)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(26)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', [_vm._t("default")], 2)
-	},staticRenderFns: []}
-
-/***/ },
-/* 23 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
-	},staticRenderFns: []}
-
-/***/ },
-/* 24 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', {
-	    staticClass: "map-container"
-	  }, [_vm._m(0), _vm._v(" "), _c('div', [_vm._t("default")], 2)])
-	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', {
-	    staticClass: "map-container"
-	  }, [_c('div', {
-	    attrs: {
-	      "id": "map"
-	    }
-	  })])
-	}]}
-
-/***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
-	},staticRenderFns: []}
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
-	},staticRenderFns: []}
-
-/***/ },
-/* 27 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', [_vm._t("default")], 2)
-	},staticRenderFns: []}
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', [_vm._t("default")], 2)
-	},staticRenderFns: []}
-
-/***/ },
-/* 29 */
-/***/ function(module, exports) {
-
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div')
-	},staticRenderFns: []}
-
-/***/ },
-/* 30 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1281,23 +416,1018 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	var _leaflet = __webpack_require__(38);
+	
+	var LE = _interopRequireWildcard(_leaflet);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'dragstart', 'drag', 'dragend', 'move', 'add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose', 'clusterclick', 'clusterdblclick', 'clustermousedown', 'clustermouseover', 'clustermouseout', 'animationend', 'spiderfied', 'unspiderfied'];
+	
+	var props = {
+	  visible: {
+	    type: Boolean,
+	    custom: true,
+	    default: true
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  name: "Cluster",
+	  mounted: function mounted() {
+	    this.mapObject = L.markerClusterGroup({ chunkedLoading: true });
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.setVisible(false);
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      var that = this.mapObject;
+	      this.parent = parent;
+	      _.forEach(this.$children, function (child) {
+	        child.deferredMountedTo(that);
+	      });
+	      if (this.visible) {
+	        this.mapObject.addTo(parent);
+	      }
+	    },
+	    setVisible: function setVisible(newVal, oldVal) {
+	      if (newVal == oldVal) return;
+	      if (newVal) {
+	        this.mapObject.addTo(this.parent);
+	      } else {
+	        this.parent.removeLayer(this.mapObject);
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var props = {
+	  imagePath: {
+	    type: String,
+	    custom: true,
+	    default: ""
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    L.Icon.Default.imagePath = this.imagePath;
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {},
+	    setImagePath: function setImagePath(newVal, oldVal) {
+	      L.Icon.Default.imagePath = newVal;
+	    }
+	  }
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var props = {
+	  visible: {
+	    type: Boolean,
+	    custom: true,
+	    default: true
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    this.mapObject = L.layerGroup();
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.setVisible(false);
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      var that = this.mapObject;
+	      this.parent = parent;
+	      _.forEach(this.$children, function (child) {
+	        child.deferredMountedTo(that);
+	      });
+	      if (this.visible) {
+	        this.mapObject.addTo(parent);
+	      }
+	    },
+	    setVisible: function setVisible(newVal, oldVal) {
+	      if (newVal == oldVal) return;
+	      if (newVal) {
+	        this.mapObject.addTo(this.parent);
+	      } else {
+	        this.parent.removeLayer(this.mapObject);
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _lodash = __webpack_require__(3);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _vue = __webpack_require__(39);
+	
+	var _vue2 = _interopRequireDefault(_vue);
+	
+	var _leaflet = __webpack_require__(37);
+	
+	var _leaflet2 = _interopRequireDefault(_leaflet);
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove', 'contextmenu', 'focus', 'blur', 'preclick', 'load', 'unload', 'viewreset', 'movestart', 'move', 'moveend', 'dragstart', 'drag', 'dragend', 'zoomstart', 'zoomend', 'zoomanim', 'zoomlevelschange', 'resize', 'autopanstart', 'layeradd', 'layerremove', 'baselayerchange', 'overlayadd', 'overlayremove', 'locationfound', 'locationerror', 'popupopen', 'popupclose'];
+	
+	var props = {
+	  center: {
+	    custom: true,
+	    default: undefined
+	  },
+	  bounds: {
+	    custom: true,
+	    default: undefined
+	  },
+	  zoom: {
+	    type: Number,
+	    default: undefined
+	  },
+	  minZoom: {
+	    type: Number,
+	    default: undefined
+	  },
+	  maxZoom: {
+	    type: Number,
+	    default: undefined
+	  },
+	  paddingBottomRight: {
+	    custom: true,
+	    default: null
+	  },
+	  paddingTopLeft: {
+	    custom: true,
+	    default: null
+	  },
+	  padding: {
+	    custom: true,
+	    default: null
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    this.mapObject = _leaflet2.default.map(this.$el, {
+	      center: this.center,
+	      zoom: this.zoom,
+	      minZoom: this.minZoom,
+	      maxZoom: this.maxZoom
+	    });
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    var that = this.mapObject;
+	    _lodash2.default.forEach(this.$children, function (child) {
+	      child.deferredMountedTo(that);
+	    });
+	  },
+	
+	  methods: {
+	    setCenter: function setCenter(newVal, oldVal) {
+	      this.mapObject.setView(newVal, this.zoom);
+	    },
+	    setBounds: function setBounds(newVal, oldVal) {
+	      var options = {};
+	      if (this.padding) {
+	        options.padding = this.padding;
+	      } else {
+	        if (this.paddingBottomRight) {
+	          options.paddingBottomRight = this.paddingBottomRight;
+	        }
+	        if (this.paddingTopLeft) {
+	          options.paddingTopLeft = this.paddingTopLeft;
+	        }
+	      }
+	      this.mapObject.fitBounds(newVal, options);
+	    },
+	    setPaddingBottomRight: function setPaddingBottomRight(newVal, oldVal) {
+	      this.paddingBottomRight = newVal;
+	    },
+	    setPaddingTopLeft: function setPaddingTopLeft(newVal, oldVal) {
+	      this.paddingTopLeft = newVal;
+	    },
+	    setPadding: function setPadding(newVal, oldVal) {
+	      this.padding = newVal;
+	    }
+	  }
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'dragstart', 'drag', 'dragend', 'move', 'add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
+	
+	var props = {
+	  draggable: {
+	    type: Boolean,
+	    custom: true,
+	    default: false
+	  },
+	  visible: {
+	    type: Boolean,
+	    custom: true,
+	    default: true
+	  },
+	  latLng: {
+	    type: Object
+	  },
+	  title: {
+	    type: String,
+	    custom: true,
+	    default: ''
+	  },
+	  icon: {
+	    custom: false,
+	    default: ''
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    var options = {};
+	    if (this.icon) {
+	      options.icon = this.icon;
+	    }
+	    options.draggable = this.draggable;
+	    this.mapObject = L.marker(this.latLng, options);
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.setVisible(false);
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      this.parent = parent;
+	      var that = this.mapObject;
+	      _.forEach(this.$children, function (child) {
+	        child.deferredMountedTo(that);
+	      });
+	      if (this.visible) {
+	        this.mapObject.addTo(parent);
+	      }
+	    },
+	    setDraggable: function setDraggable(newVal, oldVal) {
+	      newVal ? this.mapObject.dragging.enable() : this.mapObject.dragging.disable();
+	    },
+	    setVisible: function setVisible(newVal, oldVal) {
+	      if (newVal == oldVal) return;
+	      if (newVal) {
+	        this.mapObject.addTo(this.parent);
+	      } else {
+	        this.parent.removeLayer(this.mapObject);
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
+	
+	var props = {
+	  latLngs: {
+	    type: Array,
+	    default: []
+	  },
+	  style: {
+	    type: Object
+	  },
+	  visible: {
+	    type: Boolean,
+	    custom: true,
+	    default: true
+	  },
+	  color: {
+	    type: String,
+	    custom: true,
+	    default: 'red'
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    this.mapObject = L.polyline(this.latLngs, { color: this.color });
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.setVisible(false);
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      this.parent = parent;
+	      if (this.visible) {
+	        this.mapObject.addTo(parent);
+	      }
+	    },
+	    setVisible: function setVisible(newVal, oldVal) {
+	      if (newVal == oldVal) return;
+	      if (newVal) {
+	        this.mapObject.addTo(this.parent);
+	      } else {
+	        this.parent.removeLayer(this.mapObject);
+	      }
+	    },
+	    setColor: function setColor(newVal, oldVal) {
+	      if (newVal == oldVal) return;
+	      if (newVal) {
+	        this.mapObject.setStyle({ color: newVal });
+	      }
+	    },
+	    addLatLng: function addLatLng(value) {
+	      this.mapObject.addLatLng(value);
+	    }
+	  }
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
+	
+	var props = {
+	  content: {
+	    custom: true,
+	    default: ''
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    this.mapObject = L.popup();
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    if (this.parent.getTooltip) {
+	      this.parent.unbindPopup();
+	    }
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      this.parent = parent;
+	      parent.bindPopup(this.content);
+	    },
+	    setContent: function setContent(newVal, oldVal) {
+	      if (newVal) {
+	        this.parent.bindPopup(this.content);
+	      } else {
+	        if (this.parent.getTooltip) {
+	          this.parent.unbindPopup();
+	        }
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  props: ['url', 'attribution', 'token'],
+	  mounted: function mounted() {
+	    this.$tileLayer = L.tileLayer(this.url, {
+	      attribution: this.attribution,
+	      token: this.token
+	    });
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      this.$tileLayer.addTo(parent);
+	      _.forEach(this.$children, function (child) {
+	        child.deferredMountedTo(that);
+	      });
+	    }
+	  }
+	};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
+	
+	var props = {
+	  content: {
+	    type: String,
+	    custom: true,
+	    default: ''
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    this.mapObject = L.tooltip();
+	    this.mapObject.setTooltipContent(this.content);
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.setVisible(false);
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      this.parent = parent;
+	      if (this.content) {
+	        this.parent.bindTooltip(this.content);
+	      }
+	    },
+	    setContent: function setContent(newVal, oldVal) {
+	      if (newVal) {
+	        this.parent.bindTooltip(this.content);
+	      } else {
+	        if (this.parent.getTooltip) {
+	          this.parent.unbindTooltip();
+	        }
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(4)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n.leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {\n\t-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;\n\t-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;\n\t-o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;\n\ttransition: transform 0.3s ease-out, opacity 0.3s ease-in;\n}\n.leaflet-cluster-spider-leg {\n\t/* stroke-dashoffset (duration and function) should match with leaflet-marker-icon transform in order to track it exactly */\n\t-webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;\n\t-moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;\n\t-o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;\n\ttransition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;\n}\n.marker-cluster-small {\n\tbackground-color: rgba(181, 226, 140, 0.6);\n}\n.marker-cluster-small div {\n\tbackground-color: rgba(110, 204, 57, 0.6);\n}\n.marker-cluster-medium {\n\tbackground-color: rgba(241, 211, 87, 0.6);\n}\n.marker-cluster-medium div {\n\tbackground-color: rgba(240, 194, 12, 0.6);\n}\n.marker-cluster-large {\n\tbackground-color: rgba(253, 156, 115, 0.6);\n}\n.marker-cluster-large div {\n\tbackground-color: rgba(241, 128, 23, 0.6);\n}\n\n\t/* IE 6-8 fallback colors */\n.leaflet-oldie .marker-cluster-small {\n\tbackground-color: rgb(181, 226, 140);\n}\n.leaflet-oldie .marker-cluster-small div {\n\tbackground-color: rgb(110, 204, 57);\n}\n.leaflet-oldie .marker-cluster-medium {\n\tbackground-color: rgb(241, 211, 87);\n}\n.leaflet-oldie .marker-cluster-medium div {\n\tbackground-color: rgb(240, 194, 12);\n}\n.leaflet-oldie .marker-cluster-large {\n\tbackground-color: rgb(253, 156, 115);\n}\n.leaflet-oldie .marker-cluster-large div {\n\tbackground-color: rgb(241, 128, 23);\n}\n.marker-cluster {\n\tbackground-clip: padding-box;\n\tborder-radius: 20px;\n}\n.marker-cluster div {\n\twidth: 30px;\n\theight: 30px;\n\tmargin-left: 5px;\n\tmargin-top: 5px;\n\n\ttext-align: center;\n\tborder-radius: 15px;\n\tfont: 12px \"Helvetica Neue\", Arial, Helvetica, sans-serif;\n}\n.marker-cluster span {\n\tline-height: 30px;\n}\n\n ", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(4)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n#map {\n  height: 100%;\n  width: 100%;\n}\n.map-container {\n  height: 100%;\n  width: 100%;\n}\n", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* styles */
+	__webpack_require__(35)
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(6)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(29)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(7)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(31)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(8)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(33)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* styles */
+	__webpack_require__(36)
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(9)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(34)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(10)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(26)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(11)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(30)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(12)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(28)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(13)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(32)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(14)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(27)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', [_vm._t("default")], 2)
+	},staticRenderFns: []}
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c("div")
+	},staticRenderFns: []}
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c("div")
+	},staticRenderFns: []}
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', [_vm._t("default")], 2)
+	},staticRenderFns: []}
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', [_vm._t("default")], 2)
+	},staticRenderFns: []}
+
+/***/ },
 /* 31 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div')
+	},staticRenderFns: []}
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c("div")
+	},staticRenderFns: []}
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', [_vm._t("default")], 2)
+	},staticRenderFns: []}
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: "map-container"
+	  }, [_vm._m(0), _vm._v(" "), _c('div', [_vm._t("default")], 2)])
+	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: "map-container"
+	  }, [_c('div', {
+	    attrs: {
+	      "id": "map"
+	    }
+	  })])
+	}]}
+
+/***/ },
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(12);
+	var content = __webpack_require__(15);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(30)(content, {});
+	var update = __webpack_require__(5)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-290724a0!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Map.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-290724a0!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Map.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-70a8c156!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Cluster.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-70a8c156!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Cluster.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -1307,13 +1437,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 32 */
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(16);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(5)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-bca3e992!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Map.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-bca3e992!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Map.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = require("leaflet");
 
 /***/ },
-/* 33 */
+/* 38 */
+/***/ function(module, exports) {
+
+	module.exports = require("leaflet.markercluster");
+
+/***/ },
+/* 39 */
 /***/ function(module, exports) {
 
 	module.exports = require("vue");
