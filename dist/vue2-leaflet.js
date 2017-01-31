@@ -462,7 +462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    default: ''
 	  },
 	  radius: {
-	    custom: true,
+	    custom: false,
 	    default: 10
 	  }
 	};

@@ -52,7 +52,7 @@ const props = {
     default: '',
   },
   radius: {
-    custom:true,
+    custom:false,
     default:10
   }
 };
@@ -96,7 +96,7 @@ export default {
       } else {
         this.parent.removeLayer(this.mapObject);
       }
-    },
+    }
   }
 };
 </script>
