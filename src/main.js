@@ -7,3 +7,4 @@ exports.IconDefault = require("./components/IconDefault.vue");
 exports.Tooltip = require("./components/Tooltip.vue");
 exports.Popup = require("./components/Popup.vue");
 exports.Cluster = require("./components/Cluster.vue");
+exports.CircleMarker = require("./components/CircleMarker.vue");

@@ -7,7 +7,7 @@
 		exports["Vue2Leaflet"] = factory(require("lodash"), require("leaflet"), require("leaflet.markercluster"), require("vue"));
 	else
 		root["Vue2Leaflet"] = factory(root["lodash"], root["leaflet"], root["leaflet.markercluster"], root["vue"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_37__, __WEBPACK_EXTERNAL_MODULE_38__, __WEBPACK_EXTERNAL_MODULE_39__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_40__, __WEBPACK_EXTERNAL_MODULE_41__, __WEBPACK_EXTERNAL_MODULE_42__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,15 +56,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	
-	exports.Map = __webpack_require__(20);
-	exports.TileLayer = __webpack_require__(24);
-	exports.Marker = __webpack_require__(21);
-	exports.Polyline = __webpack_require__(22);
-	exports.LayerGroup = __webpack_require__(19);
-	exports.IconDefault = __webpack_require__(18);
-	exports.Tooltip = __webpack_require__(25);
-	exports.Popup = __webpack_require__(23);
-	exports.Cluster = __webpack_require__(17);
+	exports.Map = __webpack_require__(22);
+	exports.TileLayer = __webpack_require__(26);
+	exports.Marker = __webpack_require__(23);
+	exports.Polyline = __webpack_require__(24);
+	exports.LayerGroup = __webpack_require__(21);
+	exports.IconDefault = __webpack_require__(20);
+	exports.Tooltip = __webpack_require__(27);
+	exports.Popup = __webpack_require__(25);
+	exports.Cluster = __webpack_require__(19);
+	exports.CircleMarker = __webpack_require__(18);
 
 /***/ },
 /* 1 */
@@ -433,7 +434,102 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propsBinder2 = _interopRequireDefault(_propsBinder);
 	
-	var _leaflet = __webpack_require__(38);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'dragstart', 'drag', 'dragend', 'move', 'add', 'remove', 'popupopen', 'popupclose', 'tooltipopen', 'tooltipclose'];
+	
+	var props = {
+	  draggable: {
+	    type: Boolean,
+	    custom: true,
+	    default: false
+	  },
+	  visible: {
+	    type: Boolean,
+	    custom: true,
+	    default: true
+	  },
+	  latLng: {
+	    type: Object
+	  },
+	  title: {
+	    type: String,
+	    custom: true,
+	    default: ''
+	  },
+	  icon: {
+	    custom: false,
+	    default: ''
+	  },
+	  radius: {
+	    custom: true,
+	    default: 10
+	  }
+	};
+	
+	exports.default = {
+	  props: props,
+	  mounted: function mounted() {
+	    var options = {};
+	    if (this.icon) {
+	      options.icon = this.icon;
+	    }
+	    options.draggable = this.draggable;
+	    this.mapObject = L.circleMarker(this.latLng, options);
+	    (0, _eventsBinder2.default)(this, this.mapObject, events);
+	    (0, _propsBinder2.default)(this, this.mapObject, props);
+	    if (this.$parent._isMounted) {
+	      this.deferredMountedTo(this.$parent.mapObject);
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.setVisible(false);
+	  },
+	
+	  methods: {
+	    deferredMountedTo: function deferredMountedTo(parent) {
+	      this.parent = parent;
+	      var that = this.mapObject;
+	      _.forEach(this.$children, function (child) {
+	        child.deferredMountedTo(that);
+	      });
+	      if (this.visible) {
+	        this.mapObject.addTo(parent);
+	      }
+	    },
+	    setDraggable: function setDraggable(newVal, oldVal) {
+	      newVal ? this.mapObject.dragging.enable() : this.mapObject.dragging.disable();
+	    },
+	    setVisible: function setVisible(newVal, oldVal) {
+	      if (newVal == oldVal) return;
+	      if (newVal) {
+	        this.mapObject.addTo(this.parent);
+	      } else {
+	        this.parent.removeLayer(this.mapObject);
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _eventsBinder = __webpack_require__(2);
+	
+	var _eventsBinder2 = _interopRequireDefault(_eventsBinder);
+	
+	var _propsBinder = __webpack_require__(1);
+	
+	var _propsBinder2 = _interopRequireDefault(_propsBinder);
+	
+	var _leaflet = __webpack_require__(41);
 	
 	var LE = _interopRequireWildcard(_leaflet);
 	
@@ -489,7 +585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -531,7 +627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -590,7 +686,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -603,11 +699,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _vue = __webpack_require__(39);
+	var _vue = __webpack_require__(42);
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _leaflet = __webpack_require__(37);
+	var _leaflet = __webpack_require__(40);
 	
 	var _leaflet2 = _interopRequireDefault(_leaflet);
 	
@@ -706,7 +802,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -797,7 +893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -880,7 +976,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -942,7 +1038,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -970,7 +1066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1034,7 +1130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(4)();
@@ -1048,7 +1144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(4)();
@@ -1062,14 +1158,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
-	
-	/* styles */
-	__webpack_require__(35)
 	
 	/* script */
 	__vue_exports__ = __webpack_require__(6)
@@ -1094,46 +1187,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-	
-	/* script */
-	__vue_exports__ = __webpack_require__(7)
-	
-	/* template */
-	var __vue_template__ = __webpack_require__(31)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	
-	module.exports = __vue_exports__
-
-
-/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 	
+	/* styles */
+	__webpack_require__(38)
+	
 	/* script */
-	__vue_exports__ = __webpack_require__(8)
+	__vue_exports__ = __webpack_require__(7)
 	
 	/* template */
-	var __vue_template__ = __webpack_require__(33)
+	var __vue_template__ = __webpack_require__(32)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -1158,11 +1225,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 	
-	/* styles */
-	__webpack_require__(36)
-	
 	/* script */
-	__vue_exports__ = __webpack_require__(9)
+	__vue_exports__ = __webpack_require__(8)
 	
 	/* template */
 	var __vue_template__ = __webpack_require__(34)
@@ -1191,10 +1255,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __vue_styles__ = {}
 	
 	/* script */
-	__vue_exports__ = __webpack_require__(10)
+	__vue_exports__ = __webpack_require__(9)
 	
 	/* template */
-	var __vue_template__ = __webpack_require__(26)
+	var __vue_template__ = __webpack_require__(36)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -1219,11 +1283,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 	
+	/* styles */
+	__webpack_require__(39)
+	
 	/* script */
-	__vue_exports__ = __webpack_require__(11)
+	__vue_exports__ = __webpack_require__(10)
 	
 	/* template */
-	var __vue_template__ = __webpack_require__(30)
+	var __vue_template__ = __webpack_require__(37)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -1249,7 +1316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __vue_styles__ = {}
 	
 	/* script */
-	__vue_exports__ = __webpack_require__(12)
+	__vue_exports__ = __webpack_require__(11)
 	
 	/* template */
 	var __vue_template__ = __webpack_require__(28)
@@ -1278,10 +1345,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __vue_styles__ = {}
 	
 	/* script */
-	__vue_exports__ = __webpack_require__(13)
+	__vue_exports__ = __webpack_require__(12)
 	
 	/* template */
-	var __vue_template__ = __webpack_require__(32)
+	var __vue_template__ = __webpack_require__(33)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -1307,10 +1374,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var __vue_styles__ = {}
 	
 	/* script */
-	__vue_exports__ = __webpack_require__(14)
+	__vue_exports__ = __webpack_require__(13)
 	
 	/* template */
-	var __vue_template__ = __webpack_require__(27)
+	var __vue_template__ = __webpack_require__(31)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -1330,26 +1397,68 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 26 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', [_vm._t("default")], 2)
-	},staticRenderFns: []}
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(14)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(35)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
 
 /***/ },
 /* 27 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
-	},staticRenderFns: []}
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = {}
+	
+	/* script */
+	__vue_exports__ = __webpack_require__(15)
+	
+	/* template */
+	var __vue_template__ = __webpack_require__(30)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	
+	module.exports = __vue_exports__
+
 
 /***/ },
 /* 28 */
 /***/ function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
+	  return _c('div', [_vm._t("default")], 2)
 	},staticRenderFns: []}
 
 /***/ },
@@ -1365,7 +1474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', [_vm._t("default")], 2)
+	  return _c("div")
 	},staticRenderFns: []}
 
 /***/ },
@@ -1373,7 +1482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div')
+	  return _c("div")
 	},staticRenderFns: []}
 
 /***/ },
@@ -1381,7 +1490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
+	  return _c('div', [_vm._t("default")], 2)
 	},staticRenderFns: []}
 
 /***/ },
@@ -1394,6 +1503,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 34 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div')
+	},staticRenderFns: []}
+
+/***/ },
+/* 35 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c("div")
+	},staticRenderFns: []}
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', [_vm._t("default")], 2)
+	},staticRenderFns: []}
+
+/***/ },
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1411,13 +1544,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}]}
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(15);
+	var content = __webpack_require__(16);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(5)(content, {});
@@ -1437,13 +1570,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(16);
+	var content = __webpack_require__(17);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(5)(content, {});
@@ -1463,19 +1596,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = require("leaflet");
 
 /***/ },
-/* 38 */
+/* 41 */
 /***/ function(module, exports) {
 
 	module.exports = require("leaflet.markercluster");
 
 /***/ },
-/* 39 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = require("vue");
