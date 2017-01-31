@@ -8,3 +8,4 @@ exports.Tooltip = require("./components/Tooltip.vue");
 exports.Popup = require("./components/Popup.vue");
 exports.Cluster = require("./components/Cluster.vue");
 exports.CircleMarker = require("./components/CircleMarker.vue");
+exports.Circle = require("./components/Circle.vue");
