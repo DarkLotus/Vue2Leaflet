@@ -15,7 +15,7 @@ npm run dev
 npm run build
 ```
 ## How to display a map
-Register Map and TielLayer components from Vue2Leaflet
+Register Map and TileLayer components from Vue2Leaflet
 
 ``` javascript
 Vue.component('v-map', Vue2Leaflet.Map);
@@ -27,6 +27,11 @@ Add the map to your template
 ``` html
 <v-map :zoom=13 :center="[47.413220, -1.219482]">
 	<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+	 <v-cluster>
+    		<v-marker v-for="m in markers" :lat-lng="m.position">
+			<v-popup :content="m.title"> </v-popup>
+    		</v-marker>
+  	 </v-cluster>
 </v-map>
 ```
 zoom, center, and url are properties or options of corresponding leaflet object.
